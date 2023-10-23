@@ -310,11 +310,7 @@ class TritonPythonModel(object):
                     if len(out) < max_num_bboxes_in_single_img:
                         num_to_add = max_num_bboxes_in_single_img - len(out)
                         to_add = ['0'] * num_to_add
-                        if len(out) == 0:
-                            batch_out['labels'][idx] = to_add
-                        else:
-                            batch_out['labels'][idx] = out + to_add
-
+                        batch_out['labels'][idx] = to_add if len(out) == 0 else out + to_add
             # Format outputs to build an InferenceResponse
             output_tensors = [Tensor(self.output_names[k], np.asarray(
                 out, dtype=self.output_dtypes[k])) for k, out in batch_out.items()]
